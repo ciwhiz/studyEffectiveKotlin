@@ -21,7 +21,7 @@ class Item35_ConsiderDefineDSL {
         print(a.sum(5))
     }
     Int.(Int) -> Int
-
+    여기선, dot(.) 앞의 Int 가 리시버가 되겠다.
      */
 
     /*
@@ -133,7 +133,7 @@ body {
     }
     +"Some content"
 }
-다른 플랫폼의 보기도 DSL을 사용하여 정의할 수 있습니다.
+다른 플랫폼의 View 도 DSL을 사용하여 정의할 수 있습니다.
 다음은 Anko 라이브러리를 사용하여 정의된 간단한 Android 보기입니다.
 verticalLayout {
      val name = editText()
@@ -200,8 +200,8 @@ DSL을 사용하면 복잡하고 계층적인 데이터 구조를 쉽게 만들 
 Groovy와 달리 완전히 형식이 안전합니다. 일부 Kotlin DSL을 이미 사용했을 가능성이 높지만 이를 직접 정의하는 방법을 아는 것도 중요합니다.
 
 Defining your own DSL
-자체 DSL을 만드는 방법을 이해하려면 receiver 가 있는 함수 유형의 개념을 이해하는 것이 중요합니다.
-그러나 그 전에 먼저 함수 유형 자체의 개념을 간략하게 검토하겠습니다.
+자체 DSL을 만드는 방법을 이해하려면 receiver 가 있는 함수 타입의 개념을 이해하는 것이 중요합니다.
+그러나 그 전에 먼저 함수 타입 자체의 개념을 간략하게 검토하겠습니다.
 
 함수 타입은 함수로 사용할 수 있는 객체를 나타내는 타입이다
 
@@ -220,7 +220,7 @@ inline fun <T> Iterable<T>.filter(
       return list
  }
 
- 다음은 함수 유형의 몇 가지 예입니다.
+ 다음은 함수 타입의 몇 가지 예입니다.
  • ()->Unit - Function with no arguments and returns Unit.
 • (Int)->Unit - Function that takes Int and returns Unit.
 • (Int)->Int - Function that takes Int and returns Int.
@@ -229,7 +229,7 @@ inline fun <T> Iterable<T>.filter(
 • (()->Unit)->Unit - Function that takes another function and returns Unit. This other function has no arguments and returns Unit.
 
 
-함수 유형의 인스턴스를 만드는 기본 방법은 다음과 같습니다.
+함수 타입의 인스턴스를 만드는 기본 방법은 다음과 같습니다.
  • 람다 식 사용
  • 익명 함수 사용
  • 함수 참조 사용
@@ -242,13 +242,13 @@ val plus2: (Int, Int)->Int = fun(a, b) = a + b   // 익명함수
 val plus3: (Int, Int)->Int = ::plus              // 함수참조 사용
 
 위의 예에서
-속성 유형이 지정되므로 람다 식과 익명 함수의 인수 유형을 유추할 수 있습니다.
-그 반대일 수도 있습니다. 인수 유형을 지정하면 함수 유형을 유추할 수 있습니다.
+속성 타입이 지정되므로 람다 식과 익명 함수의 인수 타입을 유추할 수 있습니다.
+그 반대일 수도 있습니다. 인수 타입을 지정하면 함수 타입을 유추할 수 있습니다.
 
 val plus4 = { a: Int, b: Int -> a + b }
 val plus5 = fun(a: Int, b: Int) = a + b
 
-함수 유형은 함수를 나타내는 객체를 나타냅니다.
+함수 타입은 함수를 나타내는 객체를 나타냅니다.
 
 익명 함수는 심지어 정상적인 함수처럼 보이는데, 이름은 없습니다.
 람다 식은 익명 함수에 대한 짧은 표기법입니다.
@@ -262,15 +262,15 @@ fun Int.myPlus(other: Int) = this + other
 따라서 익명 확장 함수는 동일한 방식으로 정의됩니다.
 
 val myPlus = fun Int.(other: Int) = this + other
-어떤 유형이 있습니까? 대답은 확장 함수를 나타내는 특별한 타입이 있다는 것입니다.
+어떤 타입이 있습니까? 대답은 확장 함수를 나타내는 특별한 타입이 있다는 것입니다.
 이를 리시버가 있는 함수 타입이라고 합니다.
-일반 함수 유형과 비슷해 보이지만 추가로 인수 앞에 receiver type을 지정하고 dot(.)을 사용하여 구분합니다.
+일반 함수 타입과 비슷해 보이지만 추가로 인수 앞에 receiver type을 지정하고 dot(.)을 사용하여 구분합니다.
 
 val myPlus: Int.(Int)->Int = fun Int.(other: Int) = this + other
 이러한 함수는 람다 식을 사용하여 정의할 수 있습니다.
 특히 리시버가 포함된 람다 표현식이며,
 해당 범위 this 키워드는 확장 리시버를 참조합니다.
-(이 경우 Int 유형의 인스턴스):
+(이 경우 Int 타입의 인스턴스):
 
 val myPlus: Int.(Int)->Int = { this + it }
 익명 확장 함수 또는 리시버가 있는 람다를 사용하여 생성된 객체는 3가지 방법으로 호출할 수 있습니다.
@@ -278,7 +278,7 @@ val myPlus: Int.(Int)->Int = { this + it }
 • 확장 함수 아닌 것처럼          myPlus(1, 2)
 • 일반 확장 함수와 동일하게.      1.myPlus(2)
 
-리시버가 있는 함수 유형의 가장 중요한 특성은 "this" 가 참조하는 것을 변경한다는 것입니다.
+리시버가 있는 함수 타입의 가장 중요한 특성은 "this" 가 참조하는 것을 변경한다는 것입니다.
 apply 함수 내의 인스턴스로 사용되는 this 는 리시버 객체의 메서드와 프로퍼티에 더 쉽게 접근하고 참조할 수 있게 도와줍니다
 
 inline fun <T> T.apply(block: T.() -> Unit): T {
@@ -296,7 +296,7 @@ val user = User().apply {
     surname = "Moskała"
 }
 
-리시버가 있는 함수 유형은 Kotlin DSL의 가장 기본적인 구성 요소입니다.
+리시버가 있는 함수 타입은 Kotlin DSL의 가장 기본적인 구성 요소입니다.
 아래 HTML 테이블을 만들 수 있게 해주는 아주 간단한 DSL을 만들어 봅시다.
 fun createTable(): TableDsl = table {
      tr {
