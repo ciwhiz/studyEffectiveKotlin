@@ -35,59 +35,6 @@ class Item35_ConsiderDefineDSL {
     확장함수 (Extension Function)
 
      */
-    fun callMockApi() {
-        val response: MyResponse = httpRequest {
-            url = "https://www.remember.com/todo/list"
-            method = HttpMethod.GET
-            headers = mapOf(
-                "Key1" to "Value1",
-                "Key2" to "Value2"
-            )
-            retryPolicy = retryPolicy {
-                target = RetryTarget.Some(500, 501, 503)
-                count = 3
-            }
-        }
-    }
-
-    data class HttpRequest(
-        var url: String = "",
-        var method: HttpMethod = HttpMethod.GET,
-        var headers: Map<String, String> = emptyMap(),
-        var retryPolicy: RetryPolicy? = null,
-    )
-
-    enum class HttpMethod {
-        GET,
-        POST
-    }
-
-    data class RetryPolicy(
-        var target: RetryTarget = RetryTarget.None,
-        var count: Int = 0,
-    )
-
-    sealed class RetryTarget {
-        object None : RetryTarget()
-        object All : RetryTarget()
-        class Some(vararg codes: Int) : RetryTarget()
-    }
-
-    data class MyResponse(
-        val code: Int,
-        val message: String
-    )
-
-    inline fun <reified T : Any> httpRequest(requestBlock: HttpRequest.() -> Unit): T {
-        val request = HttpRequest().also { requestBlock(it) }
-        // Execute http request
-        // Parse response
-        return T::class.primaryConstructor?.call(200, "OK") ?: throw IllegalStateException()
-    }
-
-    fun retryPolicy(policyBlock: RetryPolicy.() -> Unit): RetryPolicy {
-        return RetryPolicy().also { policyBlock(it) }
-    }
 }
 
 fun main(args: Array<String>) {
