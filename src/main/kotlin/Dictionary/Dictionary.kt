@@ -14,12 +14,14 @@ class A {
 }
 
 val double = fun(i: Int) = i * 2    // Anonymous function
-
 val triple = {i: Int -> i * 3}  // Lambda expression
+// which is a shorter notation for an anonymous function
+
 
 class IntWrapper(val i: Int) {
     fun doubled(): IntWrapper = IntWrapper(i * 2)
 }
+
 // Usage
 val wrapper = IntWrapper(10)
 val doubledWrapper = wrapper.doubled()
