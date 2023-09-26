@@ -5,7 +5,7 @@ import java.util.*
 fun double(i: Int) = i * 2  // top-level function
 
 class A {
-    fun triple(i: Int) = i * 3  // member function
+    private fun triple(i: Int) = i * 3  // member function
 
     fun twelveTimes(i: Int): Int {          // member function
         fun fourTimes() = double(double(i)) // local function
@@ -31,7 +31,7 @@ val doubledReference = IntWrapper::doubled
 fun IntWrapper.tripled() = IntWrapper(i * 3)
 
 // Use
-val wrapper = IntWrapper(10)
+//val wrapper = IntWrapper(10)
 val tripledWrapper = wrapper.tripled()
 val tripledReference = IntWrapper::tripled
 // Notice that to call both references we need to pass an instance of IntWrapper:
@@ -77,6 +77,7 @@ class SomeObject {
     }
 }
 
+/*
 class SomeObject(text: String) {
     val text: String = text
     init {
@@ -103,4 +104,4 @@ class SomeObject @JvmOverloads constructor(
     init {
         print("Creating object")
     }
-}
+}*/
